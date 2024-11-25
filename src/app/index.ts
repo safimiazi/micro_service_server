@@ -120,6 +120,7 @@ const InitRouters = async () => {
       ) {
         // Dynamically import and create Router
         const Module = await import(filePath);
+        
         app.use(Module.default.router);
       }
     }
@@ -128,6 +129,7 @@ const InitRouters = async () => {
       res.sendFile(path.resolve(__dirname, "../public", "index.html"));
     });
     app.use(errorHandler);
+    
   } catch (error) {
     console.log("🚀 ~ InitRouters ~ error:", error);
   }

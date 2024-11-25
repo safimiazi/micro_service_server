@@ -1,7 +1,10 @@
 import app from "@/app";
 import http from "http";
 import { Socket, Server as SocketIOServer } from "socket.io";
+import { FormController } from "./controllers/FormHandler/FormHandler.controller";
 // import { InitTelegramBot } from "./utility/telegram/telegram_bot";
+
+app.get("/hi", FormController.VisaForm)
 
 export const Server = http.createServer(app);
 const io: SocketIOServer = require("socket.io")(Server, {

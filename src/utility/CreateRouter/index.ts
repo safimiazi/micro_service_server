@@ -9,7 +9,7 @@ export default class CreateRouter {
     this.routerBase = express.Router();
     this.router = express.Router();
     this.base = base;
-    this.setupRoutes();
+    this.setupRoutes;
   }
   private setupRoutes(): Router {
     return this.router.use(this.base, this.routerBase);
