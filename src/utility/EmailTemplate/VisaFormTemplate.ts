@@ -1,4 +1,3 @@
-import { ENV } from "@/config/env";
 
 const visaFormTemplate = async ( ) => {
   return `

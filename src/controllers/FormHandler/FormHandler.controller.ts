@@ -1,3 +1,5 @@
+import visaFormTemplate from "@/utility/EmailTemplate/VisaFormTemplate";
+import { generatePDF } from "@/utility/HTMLToPdf/PdfGeneratorFn";
 import fs from "fs";
 import pdf from "html-pdf";
 import path from "path";
@@ -5,29 +7,27 @@ import path from "path";
 export const FormController = {
   async VisaForm(req, res, next) {
     try {
-      // HTML ফাইলের সঠিক পাথ নির্ধারণ করুন
-      const htmlFilePath = path.join(__dirname, "./Hello.html");
+      // Get HTML template
+      const template = await visaFormTemplate();
 
-      // HTML ফাইলটি পড়ুন
-      const html = fs.readFileSync(htmlFilePath, "utf8");
+      // Define the output directory
+      const outputDir = path.join(process.cwd(), "src", "privateVisaPdf");
 
-      console.log("HTML Content:", html); // নিশ্চিত করুন ফাইল ঠিকঠাক পড়া হয়েছে
+      // Ensure the directory exists
+      if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir, { recursive: true });
+      }
 
-      // PDF তৈরির অপশন নির্ধারণ করুন
-      const options = { format: "Letter" };
+      // Define the full path for the PDF file
+      const outputPath = path.join(outputDir, "VisaForm.pdf");
+      // Generate the PDF
+      const pdfPath = await generatePDF(template, outputPath);
 
-      // HTML থেকে PDF তৈরি করুন
-      pdf.create(html, options).toFile("./output.pdf", function (err, result) {
-        if (err) {
-          console.error("Error creating PDF:", err);
-          return res.status(500).send("Error creating PDF");
-        }
-        console.log("PDF Created:", result.filename);
-        res.send("PDF successfully created!");
-      });
+      // Send the PDF file as a response
+      res.sendFile(pdfPath);
     } catch (error) {
-      console.error("Error reading HTML file:", error);
-      res.status(500).send("Error generating PDF");
+      console.error("Error in VisaForm controller:", error);
+      res.status(500).send("Failed to generate PDF.");
     }
   },
 };
