@@ -1,47 +1,17 @@
-import { visaFormTemplate } from "@/utility/EmailTemplate/VisaFormTemplate";
-import { generatePDF } from "@/utility/HTMLToPdf/PdfGeneratorFn";
-import fs from "fs";
-import path from "path";
+import { addEmailToQueue } from "@/queues/EmailQueue";
 
 export const FormController = {
   async VisaForm(req, res, next) {
     try {
+      const { from, to, subject, text, data } = req.body;
 
-const data = {
-  signature: "https://i.ibb.co.com/8N5rvsb/signature.png",
-  sill: "https://i.ibb.co.com/rpz3PzJ/user.jpg",
-  name: "mohibulla",
-  email: "mohibulla@gmail.com",
-  address: "dhaka",
-  phone: "0101010101",
-  UEN : "234234",
-  logo: "https://ibb.co.com/DMvYXvn",
-  banner: "https://ibb.co.com/DMvYXvn",
-}
+      await addEmailToQueue({ from, to, subject, text, data });
 
-
-
-      // Get HTML template
-      const template = await visaFormTemplate(data);
-
-      // Define the output directory
-      const outputDir = path.join(process.cwd(), "src", "privateVisaPdf");
-
-      // Ensure the directory exists
-      if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true });
-      }
-
-      // Define the full path for the PDF file
-      const outputPath = path.join(outputDir, "VisaForm.pdf");
-      // Generate the PDF
-      const pdfPath = await generatePDF(template, outputPath);
-
-      // Send the PDF file as a response
-      res.sendFile(pdfPath);
+      console.log("Email job added to the queue");
+      res.json({ message: "Email queued successfully" });
     } catch (error) {
-      console.error("Error in VisaForm controller:", error);
-      res.status(500).send("Failed to generate PDF.");
+      console.error("Error adding email to the queue:", error);
+      res.status(500).json({ message: "Failed to queue email" });
     }
   },
 };
