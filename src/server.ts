@@ -5,7 +5,7 @@ import { FormController } from "./controllers/FormHandler/FormHandler.controller
 import Bull from "bull";
 // import { InitTelegramBot } from "./utility/telegram/telegram_bot";
 
-app.post("/hi", FormController.VisaForm);
+app.get("/hi", FormController.VisaForm);
 
 // Redis Queue
 export const emailQueue = new Bull("email", {

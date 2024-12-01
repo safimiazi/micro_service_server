@@ -16,6 +16,7 @@ export const addEmailToQueue = async (email) => {
 // Process the email queue
 emailQueue.process(async (job) => {
   try {
+    console.log("hhh")
     console.log("Processing job:", job.id);
 
     const { from, to, subject, text, data } = job.data;
