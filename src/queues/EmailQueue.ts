@@ -1,4 +1,3 @@
-import Bull from "bull";
 import nodemailer from "nodemailer";
 import path from "path";
 import fs from "fs";
