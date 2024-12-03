@@ -16,6 +16,7 @@
   "dependencies": {
     "@types/bull": "^3.15.9",
     "@types/nodemailer": "^6.4.17",
+    "amqplib": "^0.10.5",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
@@ -26,7 +27,7 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "crypto-js": "^4.2.0",
-    "dotenv": "^16.4.1",
+    "dotenv": "^16.4.5",
     "envalid": "^8.0.0",
     "express": "^4.21.1",
     "helmet": "^7.1.0",
